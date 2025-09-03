@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/finansys_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC}
+    username: ${MY_SQL_USER:root}
+    password: ${MY_SQL_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
