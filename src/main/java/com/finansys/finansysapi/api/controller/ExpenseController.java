@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,12 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseResponse>> findMyExpensesInCurrentMonth(@RequestHeader("username") String userName) {
         List<ExpenseResponse> responses =  service.findByUserAndMonth(userName);
         return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<BigDecimal> findTotalAmountByUser(@RequestHeader("username") String userName) {
+        BigDecimal response =  service.findTotalAmountByUser(userName);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")

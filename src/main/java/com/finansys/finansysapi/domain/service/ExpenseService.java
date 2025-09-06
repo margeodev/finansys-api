@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,13 @@ public class ExpenseService {
         List<Expense> expenses = repository.findByUserInCurrentMonth(user.getId());
         return expenseMapper.toExpenseResponseList(expenses);
     }
+
+    public BigDecimal findTotalAmountByUser(String userName) {
+        User user = findUser(userName);
+        List<Expense> expenses = repository.findByUserInCurrentMonth(user.getId());
+        return expenseMapper.calculateTotalAmount(expenses);
+    }
+
 
     public ExpenseResponse editExpense(Long expenseId, ExpenseRequest request) {
         Expense expense = findExpenseById(expenseId);

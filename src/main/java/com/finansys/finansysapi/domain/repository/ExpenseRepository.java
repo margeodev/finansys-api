@@ -1,7 +1,6 @@
 package com.finansys.finansysapi.domain.repository;
 
 import com.finansys.finansysapi.domain.model.Expense;
-import com.finansys.finansysapi.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

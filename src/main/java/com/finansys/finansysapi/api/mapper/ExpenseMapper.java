@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,14 +18,6 @@ import java.util.stream.Collectors;
 public class ExpenseMapper {
 
     private final ModelMapper mapper;
-
-//    public Expense toExpense(ExpenseResponse response) {
-//        return mapper.map(response, Expense.class);
-//    }
-//
-//    public Expense toExpense(ExpenseRequest response) {
-//        return mapper.map(response, Expense.class);
-//    }
 
     public ExpenseResponse toExpenseResponse(Expense expense) {
         ExpenseResponse response = new ExpenseResponse();
@@ -42,6 +35,13 @@ public class ExpenseMapper {
                 .map(this::toExpenseResponse)
                 .collect(Collectors.toList());
     }
+
+    public BigDecimal calculateTotalAmount(List<Expense> expenses) {
+        return expenses.stream()
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
 
     private CategoryResponse buildCategoryResponse(Category category) {
         return CategoryResponse.builder()
