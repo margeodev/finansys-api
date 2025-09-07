@@ -42,4 +42,7 @@ public class Expense {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Column(name = "is_exclusive")
+    private Boolean isExclusive;
+
 }

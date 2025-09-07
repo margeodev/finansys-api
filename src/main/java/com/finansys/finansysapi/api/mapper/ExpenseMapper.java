@@ -1,6 +1,5 @@
 package com.finansys.finansysapi.api.mapper;
 
-import com.finansys.finansysapi.api.request.ExpenseRequest;
 import com.finansys.finansysapi.api.response.CategoryResponse;
 import com.finansys.finansysapi.api.response.ExpenseResponse;
 import com.finansys.finansysapi.domain.model.Category;
@@ -26,6 +25,7 @@ public class ExpenseMapper {
         response.setAmount(expense.getAmount().toString()); // se for BigDecimal
         response.setCategory(buildCategoryResponse(expense.getCategory()));
         response.setDate(expense.getCreatedAt().toString());
+        response.setExclusive(expense.getIsExclusive());
         return response;
     }
 

@@ -34,6 +34,7 @@ public class ExpenseService {
         expense.setDescription(request.getDescription());
         expense.setAmount(request.getAmount());
         expense.setIsActive(true);
+        expense.setIsExclusive(request.getIsExclusive());
 
         String userName = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = findUser(userName);
