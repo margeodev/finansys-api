@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
@@ -19,6 +21,12 @@ public class UserController {
     @GetMapping("/phone-number")
     public ResponseEntity<UserResponse> findUserByPhoneNumber(@RequestHeader("phoneNumber") String phoneNumber) {
         UserResponse response =  service.findByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<UserResponse>> findUsers() {
+        var response =  service.findAll();
         return ResponseEntity.ok(response);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,11 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         return userMapper.toUserResponse(user);
+    }
+
+    public List<UserResponse> findAll() {
+        List<User> user = userRepository.findAll();
+        return userMapper.toUserResponseList(user);
     }
 
     public UserResponse findByEmail(String email) {
