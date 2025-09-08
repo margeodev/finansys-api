@@ -9,6 +9,6 @@ public class ExpenseRequest {
     private String description;
     private BigDecimal amount;
     private Long categoryId;
-    private Boolean isExclusive;
+    private Boolean isPersonal;
 }
 

@@ -25,7 +25,7 @@ public class ExpenseMapper {
         response.setAmount(expense.getAmount().toString()); // se for BigDecimal
         response.setCategory(buildCategoryResponse(expense.getCategory()));
         response.setDate(expense.getCreatedAt().toString());
-        response.setExclusive(expense.getIsExclusive());
+        response.setPersonal(expense.getIsPersonal());
         response.setAdvancePayment(expense.getIsAdvancePayment());
         return response;
     }

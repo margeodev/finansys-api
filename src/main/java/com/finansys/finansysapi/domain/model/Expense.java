@@ -42,10 +42,10 @@ public class Expense {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @Column(name = "is_exclusive")
-    private Boolean isExclusive;
+    @Column(name = "is_personal")
+    private Boolean isPersonal = false;
 
     @Column(name = "is_advance_payment")
-    private Boolean isAdvancePayment;
+    private Boolean isAdvancePayment = false;
 
 }
