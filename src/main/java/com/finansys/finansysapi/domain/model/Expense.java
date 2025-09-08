@@ -45,4 +45,7 @@ public class Expense {
     @Column(name = "is_exclusive")
     private Boolean isExclusive;
 
+    @Column(name = "is_advance_payment")
+    private Boolean isAdvancePayment;
+
 }

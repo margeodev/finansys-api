@@ -16,4 +16,5 @@ public class ExpenseResponse {
     private String amount;
     private String date;
     private boolean isExclusive;
+    private boolean isAdvancePayment;
 }

@@ -42,4 +42,10 @@ public class ExpenseController {
         return ResponseEntity.ok(expense);
     }
 
+    @PutMapping("/{id}/advance-payment")
+    public ResponseEntity<ExpenseResponse> makeIsAdvancePayment(@PathVariable Long id) {
+        var expense = service.makeIsAdvancePayment(id);
+        return ResponseEntity.ok(expense);
+    }
+
 }

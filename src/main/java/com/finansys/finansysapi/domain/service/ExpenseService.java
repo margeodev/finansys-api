@@ -60,7 +60,6 @@ public class ExpenseService {
         return expenseMapper.calculateTotalAmount(expenses);
     }
 
-
     public ExpenseResponse editExpense(Long expenseId, ExpenseRequest request) {
         Expense expense = findExpenseById(expenseId);
 
@@ -73,7 +72,12 @@ public class ExpenseService {
         return expenseMapper.toExpenseResponse(updatedExpense);
     }
 
-
+    public ExpenseResponse makeIsAdvancePayment(Long expenseId) {
+        Expense expense = findExpenseById(expenseId);
+        expense.setIsAdvancePayment(true);
+        Expense updatedExpense = repository.save(expense);
+        return expenseMapper.toExpenseResponse(updatedExpense);
+    }
 
     public Optional<ExpenseResponse> delete(Long id) {
         return repository.findById(id)

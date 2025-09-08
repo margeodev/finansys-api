@@ -26,6 +26,7 @@ public class ExpenseMapper {
         response.setCategory(buildCategoryResponse(expense.getCategory()));
         response.setDate(expense.getCreatedAt().toString());
         response.setExclusive(expense.getIsExclusive());
+        response.setAdvancePayment(expense.getIsAdvancePayment());
         return response;
     }
 
