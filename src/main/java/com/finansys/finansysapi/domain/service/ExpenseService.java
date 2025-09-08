@@ -37,7 +37,7 @@ public class ExpenseService {
         expense.setIsPersonal(request.getIsPersonal() != null && request.getIsPersonal());
 
         String userName = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = findUser(userName);
+        User user = findUserByName(userName);
         Category category = findCategoryById(request.getCategoryId());
 
         expense.setUser(user);
@@ -49,13 +49,19 @@ public class ExpenseService {
     }
 
     public List<ExpenseResponse> findByUserAndMonth(String userName) {
-        User user = findUser(userName);
+        User user = findUserByName(userName);
         List<Expense> expenses = repository.findByUserInCurrentMonth(user.getId());
         return expenseMapper.toExpenseResponseList(expenses);
     }
 
+    public List<ExpenseResponse> findMyPersonalExpensesInCurrentMonth(String userName) {
+        User user = findUserByName(userName);
+        List<Expense> expenses = repository.findMyPersonalExpensesInCurrentMonth(user.getId());
+        return expenseMapper.toExpenseResponseList(expenses);
+    }
+
     public BigDecimal findTotalAmountByUser(String userName) {
-        User user = findUser(userName);
+        User user = findUserByName(userName);
         List<Expense> expenses = repository.findByUserInCurrentMonth(user.getId());
         return expenseMapper.calculateTotalAmount(expenses);
     }
@@ -111,7 +117,7 @@ public class ExpenseService {
                 .orElseThrow(() -> new RuntimeException("Lançamento não encontrado"));
     }
 
-    private User findUser(String userName) {
+    private User findUserByName(String userName) {
         return userRepository.findByUsernameAndIsActiveTrue(userName)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 

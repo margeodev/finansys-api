@@ -30,6 +30,12 @@ public class ExpenseController {
         return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/current-month/personal")
+    public ResponseEntity<List<ExpenseResponse>> findMyPersonalExpensesInCurrentMonth(@RequestHeader("username") String userName) {
+        List<ExpenseResponse> responses =  service.findMyPersonalExpensesInCurrentMonth(userName);
+        return ResponseEntity.ok(responses);
+    }
+
     @GetMapping("/total")
     public ResponseEntity<BigDecimal> findTotalAmountByUser(@RequestHeader("username") String userName) {
         BigDecimal response =  service.findTotalAmountByUser(userName);
