@@ -1,6 +1,7 @@
 package com.finansys.finansysapi.api.controller;
 
 import com.finansys.finansysapi.api.request.ExpenseRequest;
+import com.finansys.finansysapi.api.response.BalanceResponse;
 import com.finansys.finansysapi.api.response.ExpenseResponse;
 import com.finansys.finansysapi.domain.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -37,8 +37,8 @@ public class ExpenseController {
     }
 
     @GetMapping("/total")
-    public ResponseEntity<BigDecimal> findTotalAmountByUser(@RequestHeader("username") String userName) {
-        BigDecimal response =  service.findTotalAmountByUser(userName);
+    public ResponseEntity<BalanceResponse> findTotalAmountByUser(@RequestHeader("username") String userName) {
+        BalanceResponse response =  service.findBalanceByUser(userName);
         return ResponseEntity.ok(response);
     }
 

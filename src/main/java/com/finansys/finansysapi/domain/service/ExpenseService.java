@@ -2,6 +2,7 @@ package com.finansys.finansysapi.domain.service;
 
 import com.finansys.finansysapi.api.mapper.ExpenseMapper;
 import com.finansys.finansysapi.api.request.ExpenseRequest;
+import com.finansys.finansysapi.api.response.BalanceResponse;
 import com.finansys.finansysapi.api.response.ExpenseResponse;
 import com.finansys.finansysapi.domain.exception.ExpenseException;
 import com.finansys.finansysapi.domain.model.Category;
@@ -15,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,10 +60,10 @@ public class ExpenseService {
         return expenseMapper.toExpenseResponseList(expenses);
     }
 
-    public BigDecimal findTotalAmountByUser(String userName) {
+    public BalanceResponse findBalanceByUser(String userName) {
         User user = findUserByName(userName);
         List<Expense> expenses = repository.findByUserInCurrentMonth(user.getId());
-        return expenseMapper.calculateTotalAmount(expenses);
+        return expenseMapper.toBalanceResponse(expenses);
     }
 
     public ExpenseResponse editExpense(Long expenseId, ExpenseRequest request) {

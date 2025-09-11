@@ -13,6 +13,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             "WHERE e.user.id = :userId " +
             "AND MONTH(e.createdAt) = MONTH(CURRENT_DATE) " +
             "AND YEAR(e.createdAt) = YEAR(CURRENT_DATE) " +
+            "AND e.isPersonal = false " +
             "AND e.isActive = true")
     List<Expense> findByUserInCurrentMonth(@Param("userId") Long userId);
 

@@ -1,5 +1,6 @@
 package com.finansys.finansysapi.api.mapper;
 
+import com.finansys.finansysapi.api.response.BalanceResponse;
 import com.finansys.finansysapi.api.response.CategoryResponse;
 import com.finansys.finansysapi.api.response.ExpenseResponse;
 import com.finansys.finansysapi.domain.model.Category;
@@ -37,11 +38,23 @@ public class ExpenseMapper {
                 .collect(Collectors.toList());
     }
 
-    public BigDecimal calculateTotalAmount(List<Expense> expenses) {
-        return expenses.stream()
+    public BalanceResponse toBalanceResponse(List<Expense> expenses) {
+        BigDecimal subTotal = expenses.stream()
                 .map(Expense::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal totalAdvance = expenses.stream()
+                .filter(Expense::getIsAdvancePayment)
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BalanceResponse response = new BalanceResponse();
+        response.setSubTotalBalance(subTotal);
+        response.setTotalAdvanceBalance(totalAdvance);
+
+        return response;
     }
+
 
 
     private CategoryResponse buildCategoryResponse(Category category) {
