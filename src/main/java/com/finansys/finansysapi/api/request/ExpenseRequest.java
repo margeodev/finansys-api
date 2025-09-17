@@ -10,5 +10,6 @@ public class ExpenseRequest {
     private BigDecimal amount;
     private Long categoryId;
     private Boolean isPersonal;
+    private Boolean isAdvancePayment;
 }
 

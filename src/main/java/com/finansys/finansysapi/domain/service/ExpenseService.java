@@ -78,9 +78,9 @@ public class ExpenseService {
         return expenseMapper.toExpenseResponse(updatedExpense);
     }
 
-    public ExpenseResponse makeIsAdvancePayment(Long expenseId) {
+    public ExpenseResponse changeIsAdvancePayment(Long expenseId, Boolean isAdvancePayment) {
         Expense expense = findExpenseById(expenseId);
-        expense.setIsAdvancePayment(true);
+        expense.setIsAdvancePayment(isAdvancePayment);
         Expense updatedExpense = repository.save(expense);
         return expenseMapper.toExpenseResponse(updatedExpense);
     }

@@ -6,15 +6,18 @@ import com.finansys.finansysapi.api.response.ExpenseResponse;
 import com.finansys.finansysapi.domain.model.Category;
 import com.finansys.finansysapi.domain.model.Expense;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Log
 public class ExpenseMapper {
 
     private final ModelMapper mapper;
@@ -42,20 +45,27 @@ public class ExpenseMapper {
         BigDecimal subTotal = expenses.stream()
                 .map(Expense::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        log.info("Subtotal inicial: " + subTotal);
 
         BigDecimal totalAdvance = expenses.stream()
                 .filter(Expense::getIsAdvancePayment)
                 .map(Expense::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        // Divide o totalAdvance por 2
+        BigDecimal halfAdvance = totalAdvance.divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP);
+        log.info("Total advance: " + halfAdvance);
+
+        // Subtrai metade do totalAdvance do subTotal
+        BigDecimal adjustedSubTotal = subTotal.subtract(halfAdvance);
+        log.info("Subtotal final (ajustado): " + adjustedSubTotal);
+
         BalanceResponse response = new BalanceResponse();
-        response.setSubTotalBalance(subTotal);
-        response.setTotalAdvanceBalance(totalAdvance);
+        response.setSubTotalBalance(adjustedSubTotal); // já com a subtração aplicada
+        response.setTotalAdvanceBalance(totalAdvance); // mantém o valor original
 
         return response;
     }
-
-
 
     private CategoryResponse buildCategoryResponse(Category category) {
         return CategoryResponse.builder()

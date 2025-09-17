@@ -35,6 +35,8 @@ CREATE TABLE `tb_expense` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT NULL,
   `is_active` CHAR(1) NOT NULL DEFAULT '1',
+  `is_personal` CHAR(1) DEFAULT '0',
+  `is_advance_payment` CHAR(1) DEFAULT '0',
   PRIMARY KEY (`id_expense`),
   FOREIGN KEY (`id_user`) REFERENCES `tb_user`(`id_user`),
   FOREIGN KEY (`id_category`) REFERENCES `tb_category`(`id_category`)

@@ -42,15 +42,9 @@ public class ExpenseController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ExpenseResponse> editExpense(@PathVariable Long id, @RequestBody ExpenseRequest request) {
-        var expense = service.editExpense(id, request);
-        return ResponseEntity.ok(expense);
-    }
-
-    @PutMapping("/{id}/advance-payment")
-    public ResponseEntity<ExpenseResponse> makeIsAdvancePayment(@PathVariable Long id) {
-        var expense = service.makeIsAdvancePayment(id);
+    @PatchMapping("/{id}/advance-payment")
+    public ResponseEntity<ExpenseResponse> changeIsAdvancePayment(@PathVariable Long id, @RequestBody Boolean isAdvancePayment) {
+        var expense = service.changeIsAdvancePayment(id, isAdvancePayment);
         return ResponseEntity.ok(expense);
     }
 
