@@ -16,7 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:4200", "https://finansys-webapp-production.up.railway.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("Content-Type", "Authorization", "email", "password")
+                        .allowedHeaders("Content-Type", "Authorization", "email", "password", "userName")
                         .allowCredentials(true);
             }
         };
