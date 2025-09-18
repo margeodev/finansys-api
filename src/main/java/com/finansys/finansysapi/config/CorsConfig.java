@@ -14,11 +14,12 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://finansys-webapp-production.up.railway.app")
+                        .allowedOrigins("http://localhost:4200", "https://finansys-webapp-production.up.railway.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("Content-Type", "email", "password")
+                        .allowedHeaders("Content-Type", "Authorization", "email", "password")
                         .allowCredentials(true);
             }
         };
     }
 }
+
