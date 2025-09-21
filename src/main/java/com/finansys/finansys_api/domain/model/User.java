@@ -1,4 +1,4 @@
-package com.finansys.finansys_api.domain;
+package com.finansys.finansys_api.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
