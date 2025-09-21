@@ -8,7 +8,6 @@ import com.finansys.finansys_api.web.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +21,6 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("telefone", phoneNumber));
 
         return userMapper.toUserResponse(user);
-    }
-
-    public List<UserResponse> findAll() {
-        List<User> user = userRepository.findAll();
-        return userMapper.toUserResponseList(user);
     }
 
     public UserResponse findByEmail(String email) {

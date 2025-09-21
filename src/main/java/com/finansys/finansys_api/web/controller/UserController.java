@@ -24,12 +24,6 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserResponse>> findAll() {
-        List<UserResponse> response =  service.findAll();
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/email")
     public ResponseEntity<UserResponse> findUserByEmail(@RequestHeader("email") String email) {
         UserResponse response =  service.findByEmail(email);
