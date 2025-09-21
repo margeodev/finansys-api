@@ -34,15 +34,15 @@ public class SecurityConfig {
 
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(
-            auth -> auth
-                .requestMatchers("/authenticate").permitAll()
-                .anyRequest().authenticated())
-        .httpBasic(Customizer.withDefaults())
-        .oauth2ResourceServer(
-            conf -> conf.jwt(
-                jwt -> jwt.decoder(jwtDecoder())));
+    http
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> {}) // habilita suporte a CORS
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/auth/login").permitAll()
+                    .anyRequest().authenticated())
+            .httpBasic(Customizer.withDefaults())
+            .oauth2ResourceServer(conf -> conf.jwt(
+                    jwt -> jwt.decoder(jwtDecoder())));
     return http.build();
   }
 

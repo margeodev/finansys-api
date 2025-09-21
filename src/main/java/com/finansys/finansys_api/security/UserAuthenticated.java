@@ -1,6 +1,6 @@
 package com.finansys.finansys_api.security;
 
-import com.finansys.finansys_api.domain.User;
+import com.finansys.finansys_api.domain.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
