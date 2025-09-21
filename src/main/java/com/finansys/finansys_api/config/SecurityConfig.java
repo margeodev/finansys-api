@@ -23,12 +23,17 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.web.cors.*;
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
   @Value("${jwt.public.key}")
   private RSAPublicKey key;
+
   @Value("${jwt.private.key}")
   private RSAPrivateKey priv;
 
@@ -36,7 +41,7 @@ public class SecurityConfig {
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> {}) // habilita suporte a CORS
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/auth/login").permitAll()
                     .anyRequest().authenticated())
@@ -44,6 +49,19 @@ public class SecurityConfig {
             .oauth2ResourceServer(conf -> conf.jwt(
                     jwt -> jwt.decoder(jwtDecoder())));
     return http.build();
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(List.of("http://localhost:4200")); // ajuste conforme sua origem do front
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("*"));
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 
   @Bean
