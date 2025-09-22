@@ -16,8 +16,10 @@ spring:
 
 jwt:
   private:
-    key:
-      classpath:app.key
+    key: ${JWT_PRIVATE_KEY}
   public:
-    key:
-      classpath:app.pub
+    key: ${JWT_PUBLIC_KEY}
+
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS}

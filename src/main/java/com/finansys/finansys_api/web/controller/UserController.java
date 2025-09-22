@@ -29,4 +29,10 @@ public class UserController {
         UserResponse response =  service.findByEmail(email);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<UserResponse>> findUsers() {
+        var response =  service.findAll();
+        return ResponseEntity.ok(response);
+    }
 }
