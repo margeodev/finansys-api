@@ -5,11 +5,14 @@ import com.finansys.finansys_api.web.request.ExpenseRequest;
 import com.finansys.finansys_api.web.response.BalanceResponse;
 import com.finansys.finansys_api.web.response.ExpenseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,21 +27,27 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/current-month")
-    public ResponseEntity<List<ExpenseResponse>> findMyExpensesInCurrentMonth(@RequestHeader("username") String userName) {
-        List<ExpenseResponse> responses =  service.findByUserAndMonth(userName);
-        return ResponseEntity.ok(responses);
-    }
+    @GetMapping("/period")
+    public ResponseEntity<List<ExpenseResponse>> findExpensesByMonth(
+            @RequestHeader("username") String userName,
+            @RequestParam(name = "isPersonal", defaultValue = "false") Boolean isPersonal,
+            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
-    @GetMapping("/current-month/personal")
-    public ResponseEntity<List<ExpenseResponse>> findMyPersonalExpensesInCurrentMonth(@RequestHeader("username") String userName) {
-        List<ExpenseResponse> responses =  service.findMyPersonalExpensesInCurrentMonth(userName);
+        //Se nenhuma data for fornecida, use a data atual.
+        LocalDate targetDate = Optional.ofNullable(date).orElse(LocalDate.now());
+
+        List<ExpenseResponse> responses =  service.getExpensesForMonth(userName, isPersonal, targetDate);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/total")
-    public ResponseEntity<BalanceResponse> findTotalAmountByUser(@RequestHeader("username") String userName) {
-        BalanceResponse response =  service.findBalanceByUser(userName);
+    public ResponseEntity<BalanceResponse> findTotalAmountByUser(
+            @RequestHeader("username") String userName,
+            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        //Se nenhuma data for fornecida, use a data atual.
+        LocalDate targetDate = Optional.ofNullable(date).orElse(LocalDate.now());
+        BalanceResponse response =  service.findBalanceByUser(userName, targetDate);
         return ResponseEntity.ok(response);
     }
 

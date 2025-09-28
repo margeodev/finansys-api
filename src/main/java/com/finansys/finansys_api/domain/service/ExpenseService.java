@@ -15,8 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,34 +48,14 @@ public class ExpenseService {
         return expenseMapper.toExpenseResponse(savedExpense);
     }
 
-    public List<ExpenseResponse> findByUserAndMonth(String userName) {
-        User user = userService.findByUserName(userName);
-        List<Expense> expenses = repository.findByUserInCurrentMonth(user.getId());
-        return expenseMapper.toExpenseResponseList(expenses);
-    }
-
-    public List<ExpenseResponse> findMyPersonalExpensesInCurrentMonth(String userName) {
-        User user = userService.findByUserName(userName);
-        List<Expense> expenses = repository.findMyPersonalExpensesInCurrentMonth(user.getId());
-        return expenseMapper.toExpenseResponseList(expenses);
-    }
-
-    public BalanceResponse findBalanceByUser(String userName) {
-        User user = userService.findByUserName(userName);
-        List<Expense> expenses = repository.findByUserInCurrentMonth(user.getId());
+    public BalanceResponse findBalanceByUser(String userName, LocalDate date) {
+        List<Expense> expenses = getExpenses(userName, false, date);
         return expenseMapper.toBalanceResponse(expenses);
     }
 
-    public ExpenseResponse editExpense(Long expenseId, ExpenseRequest request) {
-        Expense expense = findExpenseById(expenseId);
-
-        Category category = findCategoryById(request.getCategoryId());
-
-        expense.setDescription(request.getDescription());
-        expense.setAmount(request.getAmount());
-        expense.setCategory(category);
-        Expense updatedExpense = repository.save(expense);
-        return expenseMapper.toExpenseResponse(updatedExpense);
+    public List<ExpenseResponse> getExpensesForMonth(String userName, Boolean isPersonal, LocalDate date) {
+        List<Expense> expenses = getExpenses(userName, isPersonal, date);
+        return expenseMapper.toExpenseResponseList(expenses);
     }
 
     public ExpenseResponse changeIsAdvancePayment(Long expenseId, Boolean isAdvancePayment) {
@@ -84,13 +65,11 @@ public class ExpenseService {
         return expenseMapper.toExpenseResponse(updatedExpense);
     }
 
-    public Optional<ExpenseResponse> delete(Long id) {
-        return repository.findById(id)
-                .map(expenseToDel -> {
-                    expenseToDel.setIsActive(Boolean.FALSE);
-                    repository.save(expenseToDel);
-                    return expenseMapper.toExpenseResponse(expenseToDel);
-                });
+    private List<Expense> getExpenses(String userName, Boolean isPersonal, LocalDate date) {
+        User user = userService.findByUserName(userName);
+        LocalDate startOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
+        return repository.findExpensesByUserAndDateRange(user.getId(), isPersonal, startOfMonth, endOfMonth);
     }
 
     private void validateRequest(ExpenseRequest request) {
