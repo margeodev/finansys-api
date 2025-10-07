@@ -21,5 +21,8 @@ jwt:
     key: ${JWT_PUBLIC_KEY}
 
 app:
+  jwt:
+    access-expiration: 3600 # 1 hora em segundos
+    refresh-expiration: 2592000 # 30 dias em segundos
   cors:
     allowed-origins: ${ALLOWED_ORIGINS}
