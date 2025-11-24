@@ -5,18 +5,11 @@ COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Imagem final (Otimizada)
-FROM eclipse-temurin:17-jre-focal # Imagem menor, apenas com JRE
+# Etapa 2: Imagem final
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
-
-# Cria um usuário não-root para segurança (melhor prática)
-RUN addgroup --system spring && adduser --system --ingroup spring spring
-USER spring
-
 COPY --from=build /app/target/*.jar app.jar
-
 # Expõe a porta padrão do Spring Boot
 EXPOSE 8080
-
 # Inicia a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
