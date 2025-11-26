@@ -51,6 +51,12 @@ public class ExpenseController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{limit}")
+    public ResponseEntity<List<ExpenseResponse>> findLastExpenses(@PathVariable int limit) {
+        List<ExpenseResponse> responses = service.getLastExpenses(limit);
+        return ResponseEntity.ok(responses);
+    }
+
     @PatchMapping("/{id}/advance-payment")
     public ResponseEntity<ExpenseResponse> changeIsAdvancePayment(@PathVariable Long id, @RequestBody Boolean isAdvancePayment) {
         var expense = service.changeIsAdvancePayment(id, isAdvancePayment);

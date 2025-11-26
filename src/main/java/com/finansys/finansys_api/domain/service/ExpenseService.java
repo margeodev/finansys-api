@@ -65,6 +65,11 @@ public class ExpenseService {
         return expenseMapper.toExpenseResponse(updatedExpense);
     }
 
+    public List<ExpenseResponse> getLastExpenses(int limit) {
+        List<Expense> expenses = repository.findLastExpenses(limit);
+        return expenseMapper.toExpenseResponseList(expenses);
+    }
+
     private List<Expense> getExpenses(String userName, Boolean isPersonal, LocalDate date) {
         User user = userService.findByUserName(userName);
         LocalDate startOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());

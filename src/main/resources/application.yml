@@ -3,7 +3,7 @@ spring:
     name: finansys-api
 
   datasource:
-    urL: jdbc:mysql://${DATASOURCE_URL}:${PORT_NUMBER}/${DATABASE}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${DATASOURCE_URL}:${PORT_NUMBER}/${DATABASE}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: ${MY_SQL_USER}
     password: ${MY_SQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver

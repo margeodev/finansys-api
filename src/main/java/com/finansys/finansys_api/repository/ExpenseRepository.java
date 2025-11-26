@@ -20,4 +20,10 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
                                           @Param("startOfMonth") LocalDate startOfMonth,
                                           @Param("endOfMonth") LocalDate endOfMonth);
 
+    @Query(value = "SELECT e FROM Expense e " +
+                   "WHERE e.isActive = true " +
+                   "ORDER BY e.createdAt DESC " +
+                   "LIMIT :limit")
+    List<Expense> findLastExpenses(@Param("limit") int limit);
+
 }
