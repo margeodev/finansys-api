@@ -1,0 +1,30 @@
+# Perfil para rodar localmente sem MySQL (usa H2 em memória)
+# Ative com: mvn spring-boot:run -Dspring-boot.run.profiles=local
+# Antes, gere as chaves JWT: ./scripts/generate-jwt-keys.sh
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:finansys;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+
+# Chaves JWT: use arquivos gerados em keys/ (não commitar em produção)
+JWT_PUBLIC_KEY: file:./keys/public.pem
+JWT_PRIVATE_KEY: file:./keys/private.pem
+
+app:
+  cors:
+    allowed-origins:
+      - http://localhost:3000
+      - http://localhost:8080

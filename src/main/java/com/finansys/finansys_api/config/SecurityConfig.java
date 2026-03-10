@@ -1,5 +1,7 @@
 package com.finansys.finansys_api.config;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -78,12 +80,12 @@ public class SecurityConfig {
 
   @Bean
   RSAPublicKey rsaPublicKey() throws Exception {
-    return parsePublicKey(publicKeyEnv);
+    return parsePublicKey(resolveKeyContent(publicKeyEnv));
   }
 
   @Bean
   RSAPrivateKey rsaPrivateKey() throws Exception {
-    return parsePrivateKey(privateKeyEnv);
+    return parsePrivateKey(resolveKeyContent(privateKeyEnv));
   }
 
   @Bean
@@ -99,6 +101,15 @@ public class SecurityConfig {
   }
 
   // ---------- Métodos utilitários ----------
+
+  /** Se o valor começar com "file:", lê o conteúdo do arquivo; senão retorna o próprio valor. */
+  private String resolveKeyContent(String value) throws Exception {
+    if (value != null && value.strip().startsWith("file:")) {
+      String path = value.strip().substring(5).strip();
+      return Files.readString(Path.of(path));
+    }
+    return value;
+  }
 
   private RSAPublicKey parsePublicKey(String key) throws Exception {
     String cleanKey = key
